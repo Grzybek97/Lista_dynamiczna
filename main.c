@@ -12,19 +12,18 @@ typedef struct lista {
         list *nowa = (list*)malloc(sizeof(list));   //zasada dzia³ania jak "new" w c++
         nowa->dana = wartosc;
         nowa->nastepna = NULL;
-		if (poczatek == NULL) {
-        	return nowa;
-		}else {
+		if (poczatek != NULL) {
 			list *temp = poczatek;                //pomocnicza do przemieszczania sie po liscie
 			while (temp->nastepna) {                      //przesuniecie na ostatni element
             	temp = temp->nastepna;
     		}
 			temp->nastepna = nowa;                        //przypisanie wartosci
+			return poczatek;
 		}
-		
+		return nowa;
 };
 
-list *usun (list* poczatek, int wartosc) {
+list *usunwszystkie (list* poczatek, int wartosc) {
     list *t = poczatek;                      //pomocnicza 1.
     int licznik = 1;                                 //numeracja elementu
 	while (t) {
@@ -43,8 +42,10 @@ list *usun (list* poczatek, int wartosc) {
             		temp = temp->nastepna;
         		}
             	temp->nastepna = temp->nastepna->nastepna;
-				t = poczatek;
-    			licznik = 1;
+				free(t);
+				t = temp;
+    			licznik++;
+    			
     		}
 		}else {
 			t = t->nastepna;
@@ -72,7 +73,6 @@ void wyswietlliste(poczatek) {
 
 
 int main(int argc, char *argv[]) {
-	
 	int wybor;
 	int wartoscdanej;
 	list *pierwszy = NULL;                   //wskaznik na poczatek listy
@@ -82,28 +82,26 @@ int main(int argc, char *argv[]) {
 			wyswietlliste(pierwszy);
 			puts("");
 		
-		printf("MENU:\n1. Dodaj.\n2. Usun.\n");
+		printf("MENU:\n1. Dodaj.\n2. Usun.\n3. Wyjdz\n");
 		scanf(" %d", &wybor);
 		switch (wybor) {
 			case 1:
 				printf("Podaj dana: "); 
 				scanf("%d", &wartoscdanej);
-				if (pierwszy == NULL) {
 					pierwszy = dodaj(pierwszy, wartoscdanej);
-				}else {
-					dodaj(pierwszy, wartoscdanej);
-				}
 				break;
 			
 			case 2:
 				printf("Ktory usunac?");
 				scanf(" %d", &wartoscdanej);
-				pierwszy = usun(pierwszy, wartoscdanej);
+				pierwszy = usunwszystkie(pierwszy, wartoscdanej);
+				break;
+			case 3:
+				return 0;
 				break;
 			default:
 				break;
 		}
 		system("cls");    //czysci ekran
 	}while (1);
-	return 0;
 }
