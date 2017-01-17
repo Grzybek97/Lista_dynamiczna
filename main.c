@@ -55,7 +55,7 @@ list *usunwszystkie (list* poczatek, int wartosc) {
 	return poczatek;
 };
 
-void wyswietlliste(poczatek) {
+int wyswietlliste(poczatek) {
 	list *tmp;
 	tmp = poczatek;
 	
@@ -69,6 +69,7 @@ void wyswietlliste(poczatek) {
 		tmp = tmp->nastepna;
 		licznik++;
 	}
+	return licznik;
 };
 
 
@@ -76,19 +77,25 @@ int main(int argc, char *argv[]) {
 	int wybor;
 	int wartoscdanej;
 	list *pierwszy = NULL;                   //wskaznik na poczatek listy
+	int licznik = 0;
 	
 	do {
 			printf("LISTA:\n");
-			wyswietlliste(pierwszy);
+			licznik = wyswietlliste(pierwszy);
 			puts("");
+			if (licznik > 10) {
+				printf("lista jest pelna!\n\n");
+			}
 		
 		printf("MENU:\n1. Dodaj.\n2. Usun.\n3. Wyjdz\n");
 		scanf(" %d", &wybor);
 		switch (wybor) {
 			case 1:
-				printf("Podaj dana: "); 
-				scanf("%d", &wartoscdanej);
+				if (licznik <= 10) {
+					printf("Podaj dana: "); 
+					scanf("%d", &wartoscdanej);
 					pierwszy = dodaj(pierwszy, wartoscdanej);
+				}
 				break;
 			
 			case 2:
